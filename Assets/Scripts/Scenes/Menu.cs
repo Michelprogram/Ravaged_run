@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 
 public class Menu : MonoBehaviour
@@ -18,12 +19,21 @@ public class Menu : MonoBehaviour
     #region UI Settings
     private Button back;
 
+    public ToggleGroup keyboard;
+
     public GameObject settingsScreen;
 
     public Slider volume;
     public Text valueVolume;
 
-    //Keyboard touch
+    #endregion
+
+    #region UI Difficulty
+    public TMP_Dropdown difficulty;
+
+    private Button start;
+
+    public GameObject difficultyScreen;
     #endregion
 
     // Start is called before the first frame update
@@ -32,19 +42,14 @@ public class Menu : MonoBehaviour
         //Find our buttons in scene
         InitButtons();
 
-        //Hide settings screen
+        //Hide screens
         settingsScreen.SetActive(false);
+        difficultyScreen.SetActive(false);
 
         volume.onValueChanged.AddListener(UpdateVolume);
 
         //Add event for each buttons
         EventButtons();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void InitButtons()
@@ -56,17 +61,24 @@ public class Menu : MonoBehaviour
 
         //Settings
         back = GameObject.Find("Back").GetComponent<Button>();
+
+        //Difficulty
+        start = GameObject.Find("Start").GetComponent<Button>();
     }
 
     private void EventButtons()
     {
         //Game
-        play.onClick.AddListener(GoToGame);
-        settings.onClick.AddListener(SwapMenu);
+        play.onClick.AddListener(SwapMenuDifficulty);
+        settings.onClick.AddListener(SwapMenuSettings);
         exit.onClick.AddListener(ExitGame);
 
         //Settings
-        back.onClick.AddListener(SwapMenu);
+        back.onClick.AddListener(SwapMenuSettings);
+
+        //Difficulty
+        start.onClick.AddListener(GoToGame);
+
     }
 
     private void UpdateVolume(float value)
@@ -75,15 +87,25 @@ public class Menu : MonoBehaviour
         valueVolume.text = value+"";
     }
 
-    private void SwapMenu()
+    private void SwapMenuSettings()
     {
         ToggleMenu();
         ToggleSettings();
     }
 
+    private void SwapMenuDifficulty()
+    {
+        ToggleMenu();
+        ToggleDifficulty();
+    }
+
     private void GoToGame()
     {
-        SceneManager.LoadScene(1);
+        Debug.Log(GetSelectedToggle().name);
+        Debug.Log(difficulty.value);
+        
+
+        //SceneManager.LoadScene(1);
     }
 
     private void ToggleSettings()
@@ -98,8 +120,24 @@ public class Menu : MonoBehaviour
         gameScreen.SetActive(!active);
     }
 
+    private void ToggleDifficulty()
+    {
+        var active = gameScreen.activeInHierarchy;
+        difficultyScreen.SetActive(!active);
+    }
+
     private void ExitGame()
     {
         Application.Quit();
+    }
+
+    private Toggle GetSelectedToggle()
+    {
+        foreach(Toggle toggle in keyboard.GetComponentsInChildren<Toggle>())
+        {
+            if (toggle.isOn) return toggle;
+        }
+
+        return null;
     }
 }
