@@ -1,53 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using UnityEngine;
 
 public class RandomMusicPlayer : MonoBehaviour
 {
 
-    private string folderPath;
-
-    private AudioSource audio;
-
     private AudioClip clip;
-    // Start is called before the first frame update
+
+    public AudioClip[] songs;
+
     void Start()
     {
+        var audio = GetComponent<AudioSource>();
 
-        var audioPath = RandomAudio();
+        int index = Random.Range(0, songs.Length);
 
-        audio = GetComponent<AudioSource>();
-
-        clip = GenerateClip(audioPath);
-
-        SetClip();
+        audio.clip = songs[index];
        
         audio.Play();
     }
 
-    private string RandomAudio() {
-
-        string[] filePaths = Directory.GetFiles(folderPath);
-
-        int index = Random.Range(0, filePaths.Length);
-
-        return filePaths[index];
-    }
-
-    /*
-     * Set Audio clip
-     */
-    private AudioClip GenerateClip(string path)
-    {
-        return AudioClip.Create(Path.GetFileNameWithoutExtension(path), (int)new FileInfo(path).Length, 1, 44100, false);
-    }
-
-    /*
-     * Set Audio to the attribute
-     */
-    private void SetClip()
-    {
-        audio.clip = clip;
-    }
 }
