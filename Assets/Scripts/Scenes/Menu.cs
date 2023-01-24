@@ -101,9 +101,11 @@ public class Menu : MonoBehaviour
 
     private void GoToGame()
     {
-        Debug.Log(GetSelectedToggle().name);
-        Debug.Log(difficulty.value);
-        
+        var condition = GetSelectedToggle().name == "1";
+
+        Shared.SetKeyboard(condition);
+        Shared.SetDifficulty(difficulty.value);
+
 
         SceneManager.LoadScene(1);
     }

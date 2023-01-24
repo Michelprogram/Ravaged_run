@@ -4,11 +4,12 @@ using UnityEngine.TextCore.Text;
 
 public class Character : MonoBehaviour
 {
-
+    /*
 	private Animator animator;
 	private Rigidbody rigibody;
 
 	private bool running;
+    */
 
 	private float speed;
 
@@ -16,17 +17,21 @@ public class Character : MonoBehaviour
 	void Start()
 	{
 		//TODO : Intégrer une animation
+        /*
 		animator = GetComponent<Animator>();
 		rigibody = GetComponent<Rigidbody>();
 		running = false;
+        */
 
 
-		speed = 0.005f;
+        speed = 0.02f * Shared.GetDifficulty();
+        Debug.Log(speed);
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+
         if (Shared.GetKeyboard())
         {
             ConfigKeyBoard();
@@ -77,6 +82,11 @@ public class Character : MonoBehaviour
         {
             Right();
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("test");
     }
 
     private void Forward()

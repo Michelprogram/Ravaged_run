@@ -1,4 +1,6 @@
 using System;
+using UnityEngine.Events;
+
 public class Shared
 {
     public Shared()
@@ -7,7 +9,10 @@ public class Shared
 
     public static bool keyboard = true;
 
-    public static int difficulty = 0;
+    public static UnityEvent arrival = new UnityEvent();
+    public static UnityEvent obstacle = new UnityEvent();
+
+    public static int difficulty = 1;
 
     public static void SetDifficulty(int d)
     {
@@ -28,5 +33,6 @@ public class Shared
     {
         return keyboard;
     }
+
 }
 
