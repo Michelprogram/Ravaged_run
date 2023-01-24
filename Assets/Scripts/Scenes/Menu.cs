@@ -89,14 +89,14 @@ public class Menu : MonoBehaviour
 
     private void SwapMenuSettings()
     {
-        ToggleMenu();
-        ToggleSettings();
+        Utils.ToggleCanvas(gameScreen);
+        Utils.ToggleCanvas(settingsScreen);
     }
 
     private void SwapMenuDifficulty()
     {
-        ToggleMenu();
-        ToggleDifficulty();
+        Utils.ToggleCanvas(gameScreen);
+        Utils.ToggleCanvas(difficultyScreen);
     }
 
     private void GoToGame()
@@ -105,25 +105,7 @@ public class Menu : MonoBehaviour
         Debug.Log(difficulty.value);
         
 
-        //SceneManager.LoadScene(1);
-    }
-
-    private void ToggleSettings()
-    {
-        var active = settingsScreen.activeInHierarchy;
-        settingsScreen.SetActive(!active);
-    }
-
-    private void ToggleMenu()
-    {
-        var active = gameScreen.activeInHierarchy;
-        gameScreen.SetActive(!active);
-    }
-
-    private void ToggleDifficulty()
-    {
-        var active = gameScreen.activeInHierarchy;
-        difficultyScreen.SetActive(!active);
+        SceneManager.LoadScene(1);
     }
 
     private void ExitGame()
