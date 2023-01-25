@@ -31,7 +31,7 @@ public class Character : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-
+        if (Shared.GetPause()) return;
         if (Shared.GetKeyboard())
         {
             ConfigKeyBoard();
@@ -82,11 +82,6 @@ public class Character : MonoBehaviour
         {
             Right();
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("test");
     }
 
     private void Forward()

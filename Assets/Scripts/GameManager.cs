@@ -6,30 +6,34 @@ public class GameManager : MonoBehaviour
 {
     private TrancheManager trancheManager;
 
+    private int obstacle, levelSize;
+
     // Use this for initialization
     void Start()
 	{
 		InitTrancheManager();
 
-		var i = 0;
-        Vector3 coordinate;
+        switch (Shared.GetDifficulty())
+        {
+            case 1:
+                obstacle = 2;
+                levelSize = 10;
+                break;
+            case 2:
+                obstacle = 5;
+                levelSize = 13;
+                break;
+            case 3:
+                obstacle = 13;
+                levelSize = 20;
+                break;
+            case 4:
+                obstacle = 15;
+                levelSize = 25;
+                break;
+        }
 
-
-        for (i = 1; i < 3; i++)
-		{
-
-            coordinate = new Vector3(0, 0, Constantes.SizeTranche * i);
-			trancheManager.GenerateClean(coordinate);
-		}
-
-        coordinate = new Vector3(0, 0, Constantes.SizeTranche * i);
-
-        trancheManager.GenerateBigObstacleLeft(coordinate);
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
+        trancheManager.CreateLevel(obstacle, levelSize);
 
 	}
 

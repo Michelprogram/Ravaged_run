@@ -50,6 +50,9 @@ public class Menu : MonoBehaviour
 
         //Add event for each buttons
         EventButtons();
+
+        //Init Shared variables
+        Shared.ResetVariable();
     }
 
     private void InitButtons()

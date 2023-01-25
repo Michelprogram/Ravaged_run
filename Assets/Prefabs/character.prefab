@@ -2048,7 +2048,7 @@ Animator:
   m_GameObject: {fileID: 5093640610365260099}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 89024fcd810b544528894c273275465a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 9f834ab5573d94f0e96c2d28f0046ca6, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2069,7 +2069,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -2082,7 +2082,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5093640610365260099}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.9885435, y: 2.1477437, z: 1}

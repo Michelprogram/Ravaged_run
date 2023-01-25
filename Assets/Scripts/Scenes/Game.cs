@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Events;
@@ -10,6 +11,8 @@ public class Game : MonoBehaviour
     #region UI Game
 
     public GameObject gameScreen;
+
+    public Text life, score, time;
     #endregion
 
     #region UI Pause
@@ -28,19 +31,23 @@ public class Game : MonoBehaviour
     public Button back;
     #endregion
 
-    private int dodge;
+
+    private UnityEvent dead;
 
     // Use this for initialization
     void Start()
 	{
-        InitScreen();
-        InitButtons();
 
-        dodge = 1;
+        dead = new UnityEvent();
+
+        InitScreen();
+        InitText();
 
         //Events
         Shared.arrival.AddListener(WinScreen);
-        Shared.obstacle.AddListener(LostDodge);
+        Shared.obstacle.AddListener(LostLife);
+
+        dead.AddListener(DeadScreen);
 
         //Buttons
         back.onClick.AddListener(ReturnMenu);
@@ -58,20 +65,42 @@ public class Game : MonoBehaviour
         winScreen.SetActive(false);
     }
 
-    private void InitButtons()
+    private void InitText()
     {
-        //Win
+        //Game
+        life.text = "Life : "+Shared.GetLifeStr();
+
     }
 
     private void WinScreen()
     {
         Utils.ToggleCanvas(winScreen);
         Utils.ToggleCanvas(gameScreen);
+
+        Shared.SetPause(true);
     }
 
-    private void LostDodge()
+    private void DeadScreen()
     {
-        dodge--;
+        Utils.ToggleCanvas(deadScreen);
+        Utils.ToggleCanvas(gameScreen);
+
+        Shared.SetPause(true);
+    }
+
+    private void LostLife()
+    {
+        var hp = Shared.GetLife() - 1;
+
+        if (hp == 0)
+        {
+            dead.Invoke();
+        }
+        else
+        {
+            Shared.SetLife(hp);
+            life.text = "Life : " + Shared.GetLife();
+        }
     }
 
     private void ReturnMenu()
