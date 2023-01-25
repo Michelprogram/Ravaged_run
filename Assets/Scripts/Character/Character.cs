@@ -16,17 +16,16 @@ public class Character : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		//TODO : Intégrer une animation
+        //TODO : Intégrer une animation
         /*
 		animator = GetComponent<Animator>();
 		rigibody = GetComponent<Rigidbody>();
 		running = false;
         */
 
+        speed = 0.02f;
 
-        speed = 0.02f * Shared.GetDifficulty();
-        Debug.Log(speed);
-	}
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -45,17 +44,9 @@ public class Character : MonoBehaviour
 
     private void ConfigKeyBoard()
     {
-        if (Input.GetKey(KeyCode.Z))
-        {
-            Forward();
-        }
-        else if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Q))
         {
             Left();
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            Backward();
         }
         else if (Input.GetKey(KeyCode.D))
         {
@@ -65,18 +56,9 @@ public class Character : MonoBehaviour
 
     private void ConfigArrow()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            Forward();
-
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+         if (Input.GetKey(KeyCode.LeftArrow))
         {
             Left();
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            Backward();
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {

@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
 
     public GameObject gameScreen;
 
-    public Text life, score, time;
+    public Text life, score, time, level;
     #endregion
 
     #region UI Pause
@@ -46,6 +46,7 @@ public class Game : MonoBehaviour
         //Events
         Shared.arrival.AddListener(WinScreen);
         Shared.obstacle.AddListener(LostLife);
+        Shared.start.AddListener(StartRun);
 
         dead.AddListener(DeadScreen);
 
@@ -69,6 +70,7 @@ public class Game : MonoBehaviour
     {
         //Game
         life.text = "Life : "+Shared.GetLifeStr();
+        level.text = Shared.GetDifficultyStr();
 
     }
 
@@ -101,6 +103,11 @@ public class Game : MonoBehaviour
             Shared.SetLife(hp);
             life.text = "Life : " + Shared.GetLife();
         }
+    }
+
+    private void StartRun()
+    {
+        Debug.Log("start");
     }
 
     private void ReturnMenu()

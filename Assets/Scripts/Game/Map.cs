@@ -4,22 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 
-public class TrancheManager
+public class Map
 {
-    private GameObject start, bigObstacleLeft, rightObstacle,botObstacle, topObstacle,end, middleObstacle;
+    private GameObject start, end,clean, bigObstacleLeft, rightObstacle,botObstacle, topObstacle, middleObstacle;
+
+    private GameObject map;
 
     private List<GameObject> obstacles;
 
-    private int size;
+    private float speed;
 
-    public TrancheManager(GameObject start, GameObject end, GameObject bigObstacleLeft, GameObject rightObstacle,GameObject botObstacle, GameObject topObstacle, GameObject middleObstacle) {
+    public Map(GameObject start, GameObject end, GameObject clean,GameObject bigObstacleLeft, GameObject rightObstacle,GameObject botObstacle, GameObject topObstacle, GameObject middleObstacle, GameObject map) {
         this.start = start;
         this.end = end;
+        this.clean = clean;
         this.bigObstacleLeft = bigObstacleLeft;
         this.rightObstacle = rightObstacle;
         this.botObstacle = botObstacle;
         this.topObstacle = topObstacle;
         this.middleObstacle = middleObstacle;
+
+        this.map = map;
+
+        this.speed = InitMapSpeed();
 
         obstacles = new List<GameObject> { bigObstacleLeft, rightObstacle, botObstacle, topObstacle, middleObstacle };
     }
@@ -46,13 +53,14 @@ public class TrancheManager
         Utils.Shuffle<GameObject>(line);
 
         //Start tranche
-        GenerateClean(coordinate);
+        GenerateStart(coordinate);
 
         //+1 Because we start at index, first tranche it's alway Start point
         for (i = 1; i < line.Count + 1; i++)
         {
             coordinate = new Vector3(0, 0, Constantes.SizeTranche * i);
-            GameObject.Instantiate(line[i - 1], coordinate, Quaternion.identity);
+            var child = GameObject.Instantiate(line[i - 1], coordinate, Quaternion.identity, map.transform);
+            child.name = "Tranche-" + i;
         }
 
         //End Tranche
@@ -67,7 +75,6 @@ public class TrancheManager
         for(var i = 0; i < number; i++)
         {
             random = Random.Range(0, this.obstacles.Count);
-            Debug.Log(random);
             obstacles.Add(this.obstacles[random]);
         }
 
@@ -80,25 +87,44 @@ public class TrancheManager
 
         for(var i = 0; i < number; i++)
         {
-            tranches.Add(start);
+            tranches.Add(clean);
         }
 
         return tranches;
     }
 
-    public void GenerateClean(Vector3 coordinate)
-	{
-        GameObject.Instantiate(start, coordinate, Quaternion.identity);
+    private void GenerateStart(Vector3 coordinate)
+    {
+        GameObject.Instantiate(start, coordinate, Quaternion.identity, map.transform);
     }
 
-    public void GenerateEnd(Vector3 coordinate)
+    private void GenerateEnd(Vector3 coordinate)
     {
-        GameObject.Instantiate(end, coordinate, Quaternion.identity);
+        GameObject.Instantiate(end, coordinate, Quaternion.identity,map.transform);
     }
 
-    public void GenerateBigObstacleLeft(Vector3 coordinate)
+    private float InitMapSpeed()
     {
-        GameObject.Instantiate(bigObstacleLeft, coordinate, Quaternion.identity);
+
+        switch (Shared.GetDifficulty())
+        {
+            default:
+            case Shared.Difficulty.Easy:
+                return Constantes.baseSpeed * 1;
+            case Shared.Difficulty.Normal:
+                return Constantes.baseSpeed * 2;
+            case Shared.Difficulty.Hard:
+                return Constantes.baseSpeed * 3;
+            case Shared.Difficulty.Xtrem:
+                return Constantes.baseSpeed * 4;
+        }
     }
+
+
+    public void MooveMap()
+    {
+        map.transform.Translate(Vector3.back * speed);
+    }
+
 }
 

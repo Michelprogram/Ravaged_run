@@ -13,11 +13,11 @@ public class Menu : MonoBehaviour
     #region UI Menu
     private Button play, settings, exit;
 
-    public GameObject gameScreen;
+    public GameObject gameScreen, scoreboard;
     #endregion
 
     #region UI Settings
-    private Button back;
+    private Button back, resetScore;
 
     public ToggleGroup keyboard;
 
@@ -53,6 +53,7 @@ public class Menu : MonoBehaviour
 
         //Init Shared variables
         Shared.ResetVariable();
+
     }
 
     private void InitButtons()
@@ -64,6 +65,7 @@ public class Menu : MonoBehaviour
 
         //Settings
         back = GameObject.Find("Back").GetComponent<Button>();
+        resetScore = GameObject.Find("ResetScore").GetComponent<Button>();
 
         //Difficulty
         start = GameObject.Find("Start").GetComponent<Button>();
@@ -78,10 +80,19 @@ public class Menu : MonoBehaviour
 
         //Settings
         back.onClick.AddListener(SwapMenuSettings);
+        resetScore.onClick.AddListener(ResetScore);
 
         //Difficulty
         start.onClick.AddListener(GoToGame);
 
+    }
+
+    private void ResetScore()
+    {
+
+        new ScoreManager().Reset();
+
+        Shared.score.Invoke();
     }
 
     private void UpdateVolume(float value)
@@ -107,8 +118,23 @@ public class Menu : MonoBehaviour
         var condition = GetSelectedToggle().name == "1";
 
         Shared.SetKeyboard(condition);
-        Shared.SetDifficulty(difficulty.value);
 
+        switch (difficulty.value)
+        {
+            default:
+            case 0:
+                Shared.SetDifficulty(Shared.Difficulty.Easy);
+                break;
+            case 1:
+                Shared.SetDifficulty(Shared.Difficulty.Normal);
+                break;
+            case 2:
+                Shared.SetDifficulty(Shared.Difficulty.Hard);
+                break;
+            case 3:
+                Shared.SetDifficulty(Shared.Difficulty.Xtrem);
+                break;
+        }
 
         SceneManager.LoadScene(1);
     }

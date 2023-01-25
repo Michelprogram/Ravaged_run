@@ -3,6 +3,11 @@ using UnityEngine.Events;
 
 public class Shared
 {
+    public enum Difficulty
+    {
+        Easy, Normal, Hard, Xtrem
+    }
+
     public Shared()
     {
     }
@@ -11,8 +16,10 @@ public class Shared
 
     public static UnityEvent arrival = new UnityEvent();
     public static UnityEvent obstacle = new UnityEvent();
+    public static UnityEvent start = new UnityEvent();
+    public static UnityEvent score = new UnityEvent();
 
-    public static int difficulty = 1;
+    public static Difficulty difficulty = Difficulty.Easy;
 
     public static int life = 2;
 
@@ -20,18 +27,31 @@ public class Shared
     {
         keyboard = true;
         pause = false;
-        difficulty = 1;
+        difficulty = Difficulty.Easy;
         life = 2;
     }
 
-    public static void SetDifficulty(int d)
+    public static void SetDifficulty(Difficulty d)
     {
         difficulty = d;
     }
 
-    public static int GetDifficulty()
+    public static Difficulty GetDifficulty()
     {
         return difficulty;
+    }
+
+    public static string GetDifficultyStr()
+    {
+
+        string originalString = difficulty.ToString().ToUpper();
+        string spacedString = "";
+
+        for (int i = 0; i < originalString.Length; i++)
+        {
+            spacedString += originalString[i] + " ";
+        }
+        return spacedString;
     }
 
     public static void SetLife(int d)
@@ -46,7 +66,7 @@ public class Shared
 
     public static string GetLifeStr()
     {
-        return life+"";
+        return life.ToString();
     }
 
     public static void SetKeyboard(bool flag)
