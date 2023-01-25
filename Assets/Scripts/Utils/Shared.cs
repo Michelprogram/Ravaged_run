@@ -21,14 +21,11 @@ public class Shared
 
     public static Difficulty difficulty = Difficulty.Easy;
 
-    public static int life = 2;
-
     public static void ResetVariable()
     {
         keyboard = true;
         pause = false;
         difficulty = Difficulty.Easy;
-        life = 2;
     }
 
     public static void SetDifficulty(Difficulty d)
@@ -52,21 +49,6 @@ public class Shared
             spacedString += originalString[i] + " ";
         }
         return spacedString;
-    }
-
-    public static void SetLife(int d)
-    {
-        life = d;
-    }
-
-    public static int GetLife()
-    {
-        return life;
-    }
-
-    public static string GetLifeStr()
-    {
-        return life.ToString();
     }
 
     public static void SetKeyboard(bool flag)

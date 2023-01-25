@@ -11,7 +11,10 @@ public class Character : MonoBehaviour
 	private bool running;
     */
 
-	private float speed;
+    private Rigidbody rb;
+    private Animator animator;
+
+    private bool canJump;
 
 	// Use this for initialization
 	void Start()
@@ -22,8 +25,9 @@ public class Character : MonoBehaviour
 		rigibody = GetComponent<Rigidbody>();
 		running = false;
         */
-
-        speed = 0.02f;
+        canJump = true;
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
 
     }
 
@@ -42,15 +46,37 @@ public class Character : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * Constantes.fallMutiplier * Time.deltaTime;
+        }
+    }
+
     private void ConfigKeyBoard()
     {
         if (Input.GetKey(KeyCode.Q))
         {
             Left();
         }
+        else if (Input.GetKey(KeyCode.Z))
+        {
+            Forward();
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            Backward();
+        }
         else if (Input.GetKey(KeyCode.D))
         {
             Right();
+        }
+        else if (Input.GetKey(KeyCode.Space) && canJump)
+        {
+            rb.AddForce(new Vector3(0, Constantes.baseForceJump, 0), ForceMode.Impulse);
+            animator.SetBool("isJumping", true);
+            canJump = false;
         }
     }
 
@@ -68,20 +94,29 @@ public class Character : MonoBehaviour
 
     private void Forward()
     {
-        transform.Translate(Vector3.forward * speed);
+        transform.Translate(Vector3.forward * Constantes.baseSpeedCharacter);
     }
 
     private void Backward()
     {
-        transform.Translate(Vector3.back * speed);
+        transform.Translate(Vector3.back * Constantes.baseSpeedCharacter);
     }
     private void Left()
     {
-        transform.Translate(Vector3.left * speed);
+        transform.Translate(Vector3.left * Constantes.baseSpeedCharacter);
     }
     private void Right()
     {
-        transform.Translate(Vector3.right * speed);
+        transform.Translate(Vector3.right * Constantes.baseSpeedCharacter);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "ground")
+        {
+            canJump = true;
+            animator.SetBool("isJumping", false);
+        }
     }
 }
 

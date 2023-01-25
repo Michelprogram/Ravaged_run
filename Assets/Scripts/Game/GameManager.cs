@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject map;
 
     private int obstacle, levelSize;
+    private float scoreFactor;
 
     // Use this for initialization
     void Start()
