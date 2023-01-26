@@ -17,9 +17,10 @@ public class ScoreBoard : MonoBehaviour
         Shared.score.AddListener(GetScore);
     }
 
+    //Display score
     public void GetScore()
 	{
-        //Remove all childs from panel
+        
         CleanScroll();
 
         var scores = scoreManager.Read();
@@ -37,11 +38,12 @@ public class ScoreBoard : MonoBehaviour
         var texts = line.GetComponentsInChildren<Text>();
 
 		texts[0].text = score.GetName();
-        texts[1].text = score.GetPointStr();
+        texts[1].text = score.GetPoint();
         texts[2].text = score.GetTime();
         texts[3].text = score.GetDifficulty();
     }
 
+    //Remove all childs from panel
     private void CleanScroll()
     {
         foreach (Transform child in panel.transform)

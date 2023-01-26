@@ -26,11 +26,12 @@ public class Map
 
         this.map = map;
 
-        this.speed = InitMapSpeed();
+        this.speed = Utils.SpeedByDifficulty(Constantes.baseSpeed);
 
         obstacles = new List<GameObject> { bigObstacleLeft, rightObstacle, botObstacle, topObstacle, middleObstacle };
     }
 
+    //Genereate level depend on number of obstacles and size of tranches
     public void CreateLevel(int obstacles, int levelSize)
     {
 
@@ -67,6 +68,7 @@ public class Map
         GenerateEnd(new Vector3(0, 0, Constantes.SizeTranche * i));
     }
 
+    //Get tranche with obstacles
     private List<GameObject> PickObstacles(int number)
     {
         var obstacles = new List<GameObject> { };
@@ -75,12 +77,23 @@ public class Map
         for(var i = 0; i < number; i++)
         {
             random = Random.Range(0, this.obstacles.Count);
-            obstacles.Add(this.obstacles[random]);
+            var obs = this.obstacles[random];
+            if (obs.name == "RightObstacle")
+            {
+                //Une chance sur de retourner l'obstacle, donc obstacle à gauche et non à droite 
+                bool flipIt = Random.Range(0, 2) == 1;
+                if (flipIt)
+                {
+                    obs.transform.Rotate(new Vector3(0, -180, 0));
+                }
+            }
+            obstacles.Add(obs);
         }
 
         return obstacles;
     }
 
+    //Tranche without obstacles
     private List<GameObject> CleanTranches(int number)
     {
         var tranches = new List<GameObject> { };
@@ -103,24 +116,7 @@ public class Map
         GameObject.Instantiate(end, coordinate, Quaternion.identity,map.transform);
     }
 
-    private float InitMapSpeed()
-    {
-
-        switch (Shared.GetDifficulty())
-        {
-            default:
-            case Shared.Difficulty.Easy:
-                return Constantes.baseSpeed * 1;
-            case Shared.Difficulty.Normal:
-                return Constantes.baseSpeed * 2;
-            case Shared.Difficulty.Hard:
-                return Constantes.baseSpeed * 3;
-            case Shared.Difficulty.Xtrem:
-                return Constantes.baseSpeed * 4;
-        }
-    }
-
-
+    //Moove map depend on speed
     public void MooveMap()
     {
         map.transform.Translate(Vector3.back * speed);

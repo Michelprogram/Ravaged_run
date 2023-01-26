@@ -9,6 +9,7 @@ public class RandomMusicPlayer : MonoBehaviour
 
     public AudioClip[] songs;
 
+    //Two song and choosed randomly
     void Start()
     {
         var audio = GetComponent<AudioSource>();
@@ -20,6 +21,7 @@ public class RandomMusicPlayer : MonoBehaviour
         audio.Play();
     }
 
+    //Keep song between scene
     private void Awake()
     {
         GameObject[] musicObj = GameObject.FindGameObjectsWithTag("GameMusic");

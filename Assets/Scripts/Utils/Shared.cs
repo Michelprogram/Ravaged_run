@@ -21,6 +21,8 @@ public class Shared
 
     public static Difficulty difficulty = Difficulty.Easy;
 
+    public static float scoreTotal = 0.0f;
+
     public static void ResetVariable()
     {
         keyboard = true;

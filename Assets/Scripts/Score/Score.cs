@@ -9,13 +9,13 @@ public class Score
 {
     public string name;
 
-    public int point;
+    public string point;
 
     public string difficulty;
 
     public string time;
 
-    public Score(string name, int point, Shared.Difficulty difficulty, string time)
+    public Score(string name, string point, Shared.Difficulty difficulty, string time)
     {
         this.name = name;
         this.point = point;
@@ -23,11 +23,13 @@ public class Score
         this.difficulty = difficulty.ToString();
     }
 
+    //Convert score to JSON
     public string ToJSON()
     {
         return JsonUtility.ToJson(this);
     }
 
+    //Convert JSON to score
     static public Score FromJSON(string json)
     {
         return JsonUtility.FromJson<Score>(json);
@@ -68,28 +70,15 @@ public class Score
         name = newName;
     }
 
-    public void SetPoint(int newPoint)
+    public void SetPoint(string newPoint)
     {
         point = newPoint;
     }
 
-    public void AddPoint(int point)
-    {
-        this.point += point;
-    }
 
-    public void UpPoint()
-    {
-        point++;
-    }
-
-    public int GetPoint()
+    public string GetPoint()
     {
         return point;
     }
 
-    public string GetPointStr()
-    {
-        return point.ToString();
-    }
 }

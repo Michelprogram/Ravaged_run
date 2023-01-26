@@ -11,7 +11,7 @@ public class Menu : MonoBehaviour
 {
 
     #region UI Menu
-    private Button play, settings, exit;
+    public Button play, settings, exit;
 
     public GameObject gameScreen, scoreboard;
     #endregion
@@ -58,10 +58,12 @@ public class Menu : MonoBehaviour
 
     private void InitButtons()
     {
-        //Game
-        play = GameObject.Find("Play").GetComponent<Button>();
-        settings = GameObject.Find("Settings").GetComponent<Button>();
-        exit = GameObject.Find("Exit").GetComponent<Button>();
+        /*
+         * Ne marche avec le build
+            play = GameObject.Find("Play").GetComponent<Button>();
+            settings = GameObject.Find("Settings").GetComponent<Button>();
+            exit = GameObject.Find("Exit").GetComponent<Button>();
+        */
 
         //Settings
         back = GameObject.Find("Back").GetComponent<Button>();
@@ -87,9 +89,9 @@ public class Menu : MonoBehaviour
 
     }
 
+    //Remove score inside scrollbar
     private void ResetScore()
     {
-
         new ScoreManager().Reset();
 
         Shared.score.Invoke();
@@ -113,6 +115,7 @@ public class Menu : MonoBehaviour
         Utils.ToggleCanvas(difficultyScreen);
     }
 
+    //Set difficulty
     private void GoToGame()
     {
         var condition = GetSelectedToggle().name == "1";
@@ -144,6 +147,7 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
+    //Find which level is selected
     private Toggle GetSelectedToggle()
     {
         foreach(Toggle toggle in keyboard.GetComponentsInChildren<Toggle>())

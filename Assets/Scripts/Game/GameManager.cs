@@ -5,23 +5,15 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     private Map mapManager;
-    private ScoreManager scoreManager;
 
     public GameObject map;
 
     private int obstacle, levelSize;
-    private float scoreFactor;
 
     // Use this for initialization
     void Start()
 	{
         InitTrancheManager();
-
-        scoreManager = new ScoreManager();
-
-        var sc = new Score("Dorian", 300, Shared.Difficulty.Easy, "0");
-
-        scoreManager.SaveScore(sc);
 
         switch (Shared.GetDifficulty())
         {

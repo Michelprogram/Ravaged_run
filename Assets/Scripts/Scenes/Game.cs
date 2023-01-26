@@ -24,24 +24,29 @@ public class Game : MonoBehaviour
     #region UI Dead
 
     public GameObject deadScreen;
+    public Button backDead;
     #endregion
 
     #region UI Win
 
     public GameObject winScreen;
-    public Button back;
+    public Button backWin;
     #endregion
 
 
     private UnityEvent dead;
-    private float startTimer, endTimer, scoreFactor,scoreTotal;
+    private float startTimer, scoreFactor;
 
     private int computedLife;
+
+    public GameObject pseudo;
+
+    public AudioSource roblox;
 
     // Use this for initialization
     void Start()
 	{
-        scoreTotal = endTimer = startTimer = 0;
+        startTimer = 0;
         computedLife = 0;
         dead = new UnityEvent();
 
@@ -57,7 +62,8 @@ public class Game : MonoBehaviour
         dead.AddListener(DeadScreen);
 
         //Buttons
-        back.onClick.AddListener(ReturnMenu);
+        backWin.onClick.AddListener(ReturnMenu);
+        backDead.onClick.AddListener(ReturnMenu);
 
         returnGame.onClick.AddListener(ReturnGame);
 
@@ -67,7 +73,7 @@ public class Game : MonoBehaviour
 	void Update()
 	{
 
-        if (startTimer > 0 && endTimer == 0 && !Shared.GetPause())
+        if (startTimer > 0 && !Shared.GetPause())
         {
             time.text = "Time : " + ComputedTimer();
             score.text = "Score : " + ComputedScore();
@@ -111,6 +117,8 @@ public class Game : MonoBehaviour
         pauseScreen.SetActive(false);
         deadScreen.SetActive(false);
         winScreen.SetActive(false);
+
+        pseudo.SetActive(false);
     }
 
     //In pause screen return to the game
@@ -144,10 +152,10 @@ public class Game : MonoBehaviour
     {
         Utils.ToggleCanvas(winScreen);
         Utils.ToggleCanvas(gameScreen);
+        Utils.ToggleCanvas(pseudo);
 
         Shared.SetPause(true);
-
-        endTimer = Time.deltaTime;
+        
     }
 
     //Display dead screen
@@ -155,15 +163,15 @@ public class Game : MonoBehaviour
     {
         Utils.ToggleCanvas(deadScreen);
         Utils.ToggleCanvas(gameScreen);
+        Utils.ToggleCanvas(pseudo);
 
         Shared.SetPause(true);
-
-        endTimer = Time.deltaTime;
     }
 
     //Reduce one hp by one
     private void LostLife()
     {
+        roblox.Play();
         computedLife--;
         if (computedLife == 0)
         {
@@ -184,6 +192,8 @@ public class Game : MonoBehaviour
     //Change scene
     private void ReturnMenu()
     {
+        SaveScore();
+
         SceneManager.LoadScene(0);
     }
 
@@ -197,9 +207,24 @@ public class Game : MonoBehaviour
     //Computed Score
     private string ComputedScore()
     {
-        scoreTotal += (1 * scoreFactor);
+        Shared.scoreTotal += (1 * scoreFactor);
 
-        return scoreTotal.ToString("F1");
+        return Shared.scoreTotal.ToString("F1");
+    }
+
+    //Save score to json file
+    private void SaveScore()
+    {
+        var name = pseudo.GetComponent<TMP_InputField>().text.ToString();
+
+        if (name == "")
+        {
+            name = "John Doe";
+        }
+
+        var sc = new Score(name, Shared.scoreTotal.ToString("F1"), Shared.GetDifficulty(), startTimer.ToString("F2"));
+
+        new ScoreManager().SaveScore(sc);
     }
 }
 

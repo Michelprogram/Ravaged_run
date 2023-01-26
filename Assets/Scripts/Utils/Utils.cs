@@ -14,6 +14,7 @@ public class Utils
         screen.SetActive(!active);
     }
 
+    //Shuffle list
     public static void Shuffle<T>(List<T> ts)
     {
         var count = ts.Count;
@@ -24,6 +25,22 @@ public class Utils
             var tmp = ts[i];
             ts[i] = ts[r];
             ts[r] = tmp;
+        }
+    }
+
+    public static float SpeedByDifficulty(float factor)
+    {
+        switch (Shared.GetDifficulty())
+        {
+            default:
+            case Shared.Difficulty.Easy:
+                return factor * 2;
+            case Shared.Difficulty.Normal:
+                return factor * 2.5f;
+            case Shared.Difficulty.Hard:
+                return factor * 3;
+            case Shared.Difficulty.Xtrem:
+                return factor * 3.5f;
         }
     }
 }
